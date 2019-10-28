@@ -8,7 +8,7 @@
 Summary:	RCSSmin is a CSS minifier
 Name:		python-%{pypi_name}
 Version:	1.0.6
-Release:	3
+Release:	4
 License:	Apache v2.0
 Group:		Libraries/Python
 Source0:	https://pypi.python.org/packages/source/r/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
