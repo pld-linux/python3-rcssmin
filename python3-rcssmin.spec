@@ -1,46 +1,20 @@
-#
-# Conditional build:
-%bcond_without	python2 # CPython 2.x module
-%bcond_without	python3 # CPython 3.x module
-
 %define		module		rcssmin
-%define		pypi_name	rcssmin
 Summary:	RCSSmin is a CSS minifier
-Name:		python3-%{pypi_name}
-Version:	1.0.6
-Release:	11
+Name:		python3-%{module}
+Version:	1.2.1
+Release:	1
 License:	Apache v2.0
 Group:		Libraries/Python
-Source0:	https://pypi.python.org/packages/source/r/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
-# Source0-md5:	467d56503ce386c0b0e52f69ac143a9a
+Source0:	https://pypi.python.org/packages/source/r/%{module}/%{module}-%{version}.tar.gz
+# Source0-md5:	d8a49d97d36aed2dd98a0863e948f0c2
 URL:		http://opensource.perlig.de/rcssmin/
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
-%if %{with python2}
-BuildRequires:	python-modules
-BuildRequires:	python-setuptools
-%endif
-%if %{with python3}
 BuildRequires:	python3-modules
 BuildRequires:	python3-setuptools
-%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-The minifier is based on the semantics of the YUI compressor, which
-itself is based on the rule list by Isaac Schlueter.
-
-This module is a re-implementation aiming for speed instead of maximum
-compression, so it can be used at runtime (rather than during a
-preprocessing step).
-
-%package -n python3-%{pypi_name}
-Summary:	RCSSmin is a CSS minifier
-Group:		Libraries/Python
-
-%description -n python3-%{pypi_name}
-RCSSmin is a CSS minifier.
-
 The minifier is based on the semantics of the YUI compressor, which
 itself is based on the rule list by Isaac Schlueter.
 
@@ -61,56 +35,27 @@ API documentation for %{module}.
 Dokumentacja API %{module}.
 
 %prep
-%setup -q -n %{pypi_name}-%{version}
-
-# strip bang path from rcssmin.py
-sed -i '1d' rcssmin.py
+%setup -q -n %{module}-%{version}
 
 %build
-%if %{with python2}
-%py_build
-%endif
-
-%if %{with python3}
 %py3_build
-%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%if %{with python2}
-%py_install
-%py_postclean
-%endif
 
-%if %{with python3}
 %py3_install
-%endif
-
-# remove upstream developer documentation
-rm -r $RPM_BUILD_ROOT%{_docdir}/%{module}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%if %{with python2}
-%files
+%files -n python3-%{module}
 %defattr(644,root,root,755)
-%doc README.rst LICENSE bench/LICENSE.cssmin
-%attr(755,root,root) %{py_sitedir}/_%{module}.so
-%{py_sitedir}/%{module}.py[oc]
-%{py_sitedir}/%{pypi_name}-%{version}-py*.egg-info
-%endif
-
-%if %{with python3}
-%files -n python3-%{pypi_name}
-%defattr(644,root,root,755)
-%doc README.rst LICENSE bench/LICENSE.cssmin
+%doc README.md LICENSE bench/LICENSE.cssmin
 %{py3_sitedir}/%{module}.py
 %attr(755,root,root) %{py3_sitedir}/_%{module}.*.so
 %{py3_sitedir}/__pycache__/%{module}.*
-%{py3_sitedir}/%{pypi_name}-%{version}-py*.egg-info
-%endif
+%{py3_sitedir}/%{module}-%{version}-py*.egg-info
 
 %files apidocs
 %defattr(644,root,root,755)
-%doc docs/apidoc/*
+%doc docs/_userdoc/*
