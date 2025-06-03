@@ -6,7 +6,7 @@
 %define		module		rcssmin
 %define		pypi_name	rcssmin
 Summary:	RCSSmin is a CSS minifier
-Name:		python-%{pypi_name}
+Name:		python3-%{pypi_name}
 Version:	1.0.6
 Release:	11
 License:	Apache v2.0
